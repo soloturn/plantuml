@@ -10,6 +10,7 @@ println(project.version)
 val javacRelease = (project.findProperty("javacRelease") ?: "8") as String
 
 plugins {
+	id("org.jetbrains.dokka") version "1.6.10"
 	java
 	`maven-publish`
 	signing
@@ -174,4 +175,14 @@ signing {
 		sign(publishing.publications["maven"])
 		sign(closureOf<SignOperation> { sign(pdfJar.get()) })
 	}
+}
+
+tasks.withType<DokkaTask>().configureEach {
+  sourceSets {
+    main {
+      java {
+        srcDirs("src")
+      }
+    }
+  }
 }
